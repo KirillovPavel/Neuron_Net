@@ -2,6 +2,8 @@
 #define DATAFRAME_H
 
 #include <vector>
+#include <iostream>
+
 
 struct Object{
     std::vector<double> in;

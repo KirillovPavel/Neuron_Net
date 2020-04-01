@@ -19,34 +19,30 @@ void result(Object& obj, Net& net){
     obj.replace_out(net.get_result());
 }
 
-void bin(int a, std::vector<double>& res){
-	for(int i = 0; i < 8; ++i){
-		res.push_back(a % 2);
-		a = a / 2;
-	}
-}
 
-using namespace std;
 
 int main()
 {
-    vector<size_t> nneurons = {1, 6, 5, 7, 8};
-    Net net(nneurons, 0.6, 0.6);
-    Data data;
-    for(int i = 0; i < 256; ++i){
-	    vector<double> buf;
-	    bin(i, buf);
-	    vector<double> in(i);
-	    Object obj(in, buf);
-	    data.push_back(obj);
-    }
-    learn(data, net, 5000);
-    net.dump_links("y_x");
+    //XOR:
 
-    //Net net("y_x");
-    Object obj({3});
-    result(obj, net);
-    for(auto i : obj.out)
-        cout << i << ' ';
+    //init
+    std::vector<size_t> Nneurons = {2, 2, 1};
+    Net XOR(Nneurons);
+    Data data;
+    data.push_back(Object({0, 0}, {1}));
+    data.push_back(Object({1, 0}, {0}));
+    data.push_back(Object({0, 1}, {0}));
+    data.push_back(Object({1, 1}, {1}));
+
+    //learning
+    learn(data, XOR, 10000);
+
+    //checking result
+    Object check({0, 1}, {0});
+    result(check, XOR);
+    std::cout << check.out[0] << std::endl;
+
+    XOR.print_Neurons();
+
     return 0;
 }

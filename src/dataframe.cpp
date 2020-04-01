@@ -1,5 +1,4 @@
 #include "dataframe.h"
-#include <iostream>
 
 /*ОПИСАНИЕ ОБЪЕКТА*/
     Object::Object(){}

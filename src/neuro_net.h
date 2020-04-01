@@ -2,38 +2,51 @@
 #define NEURO_NET_H
 
 #include <vector>
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <fstream>
+#include <string>
 
-struct Neuro{
+struct Neuron{
     double value;
     double active_value;
     double error;
-    Neuro(double value = 0, double error = 0);
+    char function;
+
+    Neuron(char function = 0, double value = 0);
+    void set_function(std::string const function);
     void sigma(bool is_derive = false);
+    void tangens(bool is_derive = false);
+    void ReLu(bool is_derive = false);
+    void active(bool is_derive = false);
 };
 
 struct Net{
 /* Main information */
     double etta; //скорость обучения
     double moment; // инерция
-    size_t nlayers;
-    std::vector<size_t> nneuros;
-    std::vector<std::vector<Neuro>> neuros;
-    std::vector<std::vector<std::vector<double>>> links;
-    std::vector<std::vector<std::vector<double>>> delta_links;
+    size_t NLayers;
+    std::vector<size_t> NNeurons;
+    std::vector<std::vector<Neuron>> Neurons;
+    std::vector<std::vector<std::vector<double>>> Links;
+    std::vector<std::vector<std::vector<double>>> delta_Links;
 
-/*Information for optimization*/
+/*Information for optimize*/
     size_t Max_layer_size;
 
-    Net(std::vector<size_t>& nneuros_in, double etta = 0.7, double moment = 0.5);
-    Net(char const* infile_name, double etta = 0.7, double moment = 0.5);
-    void set_parametres(double education = 0.7, double momentum = 0.5);
-    void print_neuros() const;
-    void print_links() const;
+    Net(std::vector<size_t>& NNeurons_in, double etta = 1, double moment = 0);
+    Net(char const* infile_name, double etta = 1, double moment = 0);
+    void set_learning_rate(double etta = 0.7);
+    void set_inertion(double moment = 0.5);
     bool download_data(std::vector<double>& in);
     void forward_pass();
-    std::vector<double> get_result();
     void back_propagation(std::vector<double> result);
-    void dump_links(char const* outfile_name);
+    std::vector<double> get_result();
+
+    void dump_Links(char const* outfile_name);
+    void print_Neurons() const;
+    void print_Links() const;
     void find_max_layer();
 };
 
